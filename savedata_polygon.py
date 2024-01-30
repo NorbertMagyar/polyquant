@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Jan 21 12:28:12 2024
-
+Find the S&P500 companies and then download historical daily candle data for a specified amount of days.
 @author: u0099498
 """
 import polygon
