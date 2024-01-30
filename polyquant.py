@@ -20,7 +20,7 @@ import plotly.io as pio
 import polygon
 import pickle
 from polygon import StocksClient
-import savesp500data_polygon
+import savedata_polygon
 
 pio.renderers.default='browser'
 plt.rcParams["figure.figsize"] = [14, 7]
@@ -49,10 +49,10 @@ start_date = '2019-01-28'
 end_date = '2024-01-24'
 delta = timedelta(days=1)
 
-client = polygon.StocksClient('JvxuTJB5r_gPuVKnV9fFhwFGjteLQHBo', connect_timeout=15)
+client = polygon.StocksClient('', connect_timeout=15)
 
 if not os.path.isfile("sp500data-" + start_date +"-" + end_date +"-poly.pkl"):
-    data = savesp500data_polygon.downloaddata(start_date,end_date)
+    data = savedata_polygon.downloaddata(start_date,end_date)
 else: 
     with open("sp500data-"+start_date+"-"+end_date+"-poly.pkl", 'rb') as f:
       data = pickle.load(f)
