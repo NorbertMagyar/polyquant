@@ -11,7 +11,6 @@ import yfinance as yf
 import pandas as pd
 import pickle
 from matplotlib.dates import date2num
-
 import modules
 import strats
 import helpers
@@ -21,11 +20,11 @@ import time
 modules.initialize()
 
 # Define general date range of interest
-start_date = '2019-01-28'
+start_date = '2010-01-28'
 end_date = '2024-01-24'
 
 if not os.path.isfile("sp500data-" + start_date +"-" + end_date +"-poly.pkl"):
-    data = helpers.downloaddata(start_date,end_date)
+    data = helpers.downloaddata(start_date,end_date,api='yfinance')
     print("\nLoading data...")
     df = helpers.dictdf(data)
 else: 
@@ -37,18 +36,13 @@ else:
         print("Loading data...")
         df = helpers.dictdf(data)
         
-with open("losers5m-2019-01-28-2024-01-24-poly.pkl", 'rb') as f:
-   datals = pickle.load(f)
-with open("gainers5m-2019-01-28-2024-01-24-poly.pkl", 'rb') as f:
-   datagn = pickle.load(f)
-        
 # Download the data using yfinance
 sp500 = yf.download('^GSPC', start=start_date, end=end_date, interval='1d',progress=False)
 
 # Define date range of interest for performing strategy analysis
 # TIPS: Make sure starting day is not Saturday-Monday (otherwise there is no prevday in data)
 
-start_day =  datetime.datetime.strptime('2024-01-06',"%Y-%m-%d").date()
+start_day =  datetime.datetime.strptime('2024-01-20',"%Y-%m-%d").date()
 end_day = datetime.datetime.strptime('2024-01-24',"%Y-%m-%d").date() 
 
 # Number of top movers to consider
@@ -62,13 +56,14 @@ log['Datetime'] = pd.to_datetime(log['Datetime'])
 # Main loop of days
 start_time = time.time()
 
+datals = []; datagn =[]
+
 for day in df.loc[start_day:end_day].index.strftime("%Y-%m-%d"):
     print('\r'+day,end="")  
-    TopChg = helpers.findtopmovers(df,day,numtop,True)
-    ls=[]
+    TopChg = helpers.findtopmovers(df,day,numtop,False)
     for ticker in TopChg.index:  
-        print(ticker)
-        #strats.toplosers(df, ticker, day, log)   
+         print(ticker)
+         #strats.toplosers(df, ticker, day, log)   
   
 log.set_index('Datetime', inplace=True)
 # For visualization of daily profits and tickers on mouse click 
