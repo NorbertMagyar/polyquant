@@ -14,7 +14,7 @@ def initialize():
  #globally relevant variables
  global client, delta
 
- client = polygon.StocksClient('JvxuTJB5r_gPuVKnV9fFhwFGjteLQHBo',read_timeout=60)
+ client = polygon.StocksClient('',read_timeout=60)
  
  delta = datetime.timedelta(days=1)
 
